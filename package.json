@@ -1,0 +1,37 @@
+{
+  "name": "zy-cli",
+  "version": "0.0.1",
+  "description": "",
+  "main": "./bin/cli.js",
+  "bin": {
+    "zy": "./bin/cli.js"
+  },
+  "scripts": {
+    "dev": "rm -rf lib && tsc --watch && npm link",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "zuoyong",
+  "license": "ISC",
+  "devDependencies": {
+    "axios": "^0.26.1",
+    "chalk": "^4.1.1",
+    "commander": "^9.2.0",
+    "crypto-js": "^4.1.1",
+    "download-git-repo": "^3.0.2",
+    "figlet": "^1.5.2",
+    "fs-extra": "^10.1.0",
+    "inquirer": "^8.2.2",
+    "ora": "^5.4.1"
+  },
+  "dependencies": {
+    "@babel/parser": "^7.20.15",
+    "@babel/traverse": "^7.20.13",
+    "@babel/types": "^7.20.7",
+    "@types/babel__traverse": "^7.18.3",
+    "@types/crypto-js": "^4.1.1",
+    "@types/fs-extra": "^11.0.1",
+    "@types/inquirer": "^9.0.3",
+    "@types/node": "^18.13.0"
+  }
+}
