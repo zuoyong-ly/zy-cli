@@ -1,19 +1,34 @@
 {
-  "name": "zy-cli",
+  "name": "@zuoyong/zy-cli",
   "version": "0.0.1",
   "description": "",
   "main": "./bin/cli.js",
   "bin": {
-    "zy": "./bin/cli.js"
+    "zy-cli": "./bin/cli.js"
   },
   "scripts": {
     "dev": "rm -rf lib && tsc --watch && npm link",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "publish": "npm publish --access public"
   },
+  "files": [
+    "bin/*",
+    "lib/*"
+  ],
   "keywords": [],
   "author": "zuoyong",
   "license": "ISC",
   "devDependencies": {
+    "@types/babel__traverse": "^7.18.3",
+    "@types/crypto-js": "^4.1.1",
+    "@types/fs-extra": "^11.0.1",
+    "@types/inquirer": "^9.0.3",
+    "@types/node": "^18.13.0"
+  },
+  "dependencies": {
+    "@babel/parser": "^7.20.15",
+    "@babel/traverse": "^7.20.13",
+    "@babel/types": "^7.20.7",
     "axios": "^0.26.1",
     "chalk": "^4.1.1",
     "commander": "^9.2.0",
@@ -23,15 +38,5 @@
     "fs-extra": "^10.1.0",
     "inquirer": "^8.2.2",
     "ora": "^5.4.1"
-  },
-  "dependencies": {
-    "@babel/parser": "^7.20.15",
-    "@babel/traverse": "^7.20.13",
-    "@babel/types": "^7.20.7",
-    "@types/babel__traverse": "^7.18.3",
-    "@types/crypto-js": "^4.1.1",
-    "@types/fs-extra": "^11.0.1",
-    "@types/inquirer": "^9.0.3",
-    "@types/node": "^18.13.0"
   }
 }
