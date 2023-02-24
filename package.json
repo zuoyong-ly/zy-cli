@@ -1,6 +1,6 @@
 {
   "name": "@zuoyong/zy-cli",
-  "version": "0.0.1",
+  "version": "0.0.3-bate.2",
   "description": "",
   "main": "./bin/cli.js",
   "bin": {
@@ -8,8 +8,7 @@
   },
   "scripts": {
     "dev": "rm -rf lib && tsc --watch && npm link",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "publish": "npm publish --access public"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "files": [
     "bin/*",
@@ -22,6 +21,7 @@
     "@types/babel__traverse": "^7.18.3",
     "@types/crypto-js": "^4.1.1",
     "@types/fs-extra": "^11.0.1",
+    "@types/humps": "^2.0.2",
     "@types/inquirer": "^9.0.3",
     "@types/node": "^18.13.0"
   },
@@ -36,6 +36,7 @@
     "download-git-repo": "^3.0.2",
     "figlet": "^1.5.2",
     "fs-extra": "^10.1.0",
+    "humps": "^2.0.1",
     "inquirer": "^8.2.2",
     "ora": "^5.4.1"
   }

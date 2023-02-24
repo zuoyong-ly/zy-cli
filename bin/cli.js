@@ -3,7 +3,7 @@
 const program = require("commander");
 const chalk = require("chalk");
 const figlet = require("figlet");
-const { create, translate, generationEnum } = require("../lib");
+const { create, translate, generateEnum } = require("../lib");
 
 // 创建项目模版
 program
@@ -28,9 +28,10 @@ program
 program
   .command("enum [enumData]")
   .description("枚举翻译")
-  .option("-f, --full", "枚举是否使用翻译后的数据")
+  .option("-f, --force", "目标目录已存在，是否覆盖目标目录")
+  .option("-t, --translate", "枚举是否使用翻译后的数据")
   .action((enumData, options) => {
-    generationEnum(enumData, options);
+    generateEnum(enumData, options);
   });
 
 // 监听 --help 执行

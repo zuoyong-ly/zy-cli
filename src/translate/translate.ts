@@ -3,7 +3,7 @@ import * as babelParser from "@babel/parser";
 import fs from 'fs-extra';
 import path from "path";
 import { traverseFile } from "../util";
-import * as  babelTypes from "@babel/types";
+// import * as  babelTypes from "@babel/types";
 
 function translate(projectName: string) {
   // 获取当前工作目录
@@ -18,9 +18,9 @@ function translate(projectName: string) {
   const pageFileList = filerPath.filter(item =>
     !ignoreRegex.every(it => it.test(item)) && fileRegex.test(item) && !localeRegex.test(item)
   );
-  console.log(pageFileList)
 
-  pageFileList.filter((it,i)=>i === 0).forEach(filePath => {
+  pageFileList.forEach(filePath => {
+    console.log(filePath)
     const file: string = fs.readFileSync(filePath, 'utf-8')
     try {
       const ast = babelParser.parse(file, {
@@ -32,12 +32,23 @@ function translate(projectName: string) {
       })
       babelTraverse(ast, {
         enter(path) {
-          const node = path.node
-          console.log(path)
+          // const node = path.node
+          // console.log(path)
 
+        },
+        JSXOpeningElement(path) {
+          const node = path.node;
+          // if (node.name.type === 'FormItem'){
+            console.log(node.attributes)
+          // }
         }
+        // JSXText(path) {
+        //   const node = path.node;
+        //   console.log(node)
+        // }
+
       });
-    console.log(filePath)
+      console.log(filePath)
 
     } catch (error: any) {
       if (error.loc) {
