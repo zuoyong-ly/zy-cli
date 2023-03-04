@@ -29,7 +29,7 @@ export default async function generateEnum(
   try {
     const [key] = enumStr.split("=[");
     const fileName = humps.decamelize(key).replace('_enum', '');
-
+    
     if (!options.translate) {
       const { isFull } = await inquirer.prompt([
         {
@@ -101,6 +101,7 @@ export default async function generateEnum(
       return;
     }
     if (isCreate) {
+      // 创建文件夹
       if (fs.existsSync(targetDirectory)) {
         fs.writeFileSync(targetFile, enumString);
       } else {

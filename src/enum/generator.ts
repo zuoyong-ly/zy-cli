@@ -45,7 +45,7 @@ export default async function generatorEnum(enumStr: string, { isOptionFull }: {
   /// 
   /// en: ${item}
   /// 
-  /// value: ${map[index].value}}
+  /// value: ${map[index].value}
   ${enumKey}(${map[index].value}, '${map[index].label}')${keyList.length - 1 == index ? ';' : ','}
       `;
     });
@@ -59,19 +59,19 @@ enum ${key} {
   final int value;
   final String label;
 
-  static String? valueToLabel(int value) {
+  const ${key}(this.value, this.label);
+
+  static String? valueToLabel(int? value) {
     return ${key}.values.firstWhereOrNull((item) {
       return item.value == value;
     })?.label;
   }
 
-  static ${key}? valueToEnum(int value) {
+  static ${key}? valueToEnum(int? value) {
     return ${key}.values.firstWhereOrNull((item) {
       return item.value == value;
     });
   }
-
-  const ${key}(this.value, this.label);
 }
   `;
   return enumString;
