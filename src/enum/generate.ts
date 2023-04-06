@@ -26,8 +26,17 @@ export default async function generateEnum(
     ]);
     enumStr = enumString;
   }
+
+  const [key] = enumStr.split("=[");
+  const { enumDesc } = await inquirer.prompt([
+    {
+      name: "enumDesc",
+      type: "input",
+      message: "请输入枚举描述",
+      default: key
+    },
+  ]);
   try {
-    const [key] = enumStr.split("=[");
     const fileName = humps.decamelize(key).replace('_enum', '');
     
     if (!options.translate) {
@@ -96,7 +105,7 @@ export default async function generateEnum(
       }
     }
 
-    const enumString = await generatorEnum(enumStr, { isOptionFull });
+    const enumString = await generatorEnum(enumStr, { isOptionFull,enumDesc });
     if (!enumString) {
       return;
     }

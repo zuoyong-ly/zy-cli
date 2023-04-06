@@ -1,7 +1,7 @@
 import { getTranslate } from "../api";
 import { loading } from "../util";
 
-export default async function generatorEnum(enumStr: string, { isOptionFull }: { isOptionFull: boolean }): Promise<string | undefined> {
+export default async function generatorEnum(enumStr: string, { isOptionFull,enumDesc }: { isOptionFull: boolean,enumDesc:string }): Promise<string | undefined> {
 
   // 拆分key和value
   const [key, valueStr] = enumStr.split("=[");
@@ -52,7 +52,8 @@ export default async function generatorEnum(enumStr: string, { isOptionFull }: {
   });
   // 生成枚举
   const enumString = `import 'package:get/get.dart';
-
+  
+/// ${enumDesc}
 enum ${key} {
   ${enumValue}
 
@@ -70,7 +71,7 @@ enum ${key} {
   static ${key}? valueToEnum(int? value) {
     return ${key}.values.firstWhereOrNull((item) {
       return item.value == value;
-    });
+    });【
   }
 }
   `;
