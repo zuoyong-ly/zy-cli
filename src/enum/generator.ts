@@ -1,7 +1,9 @@
 import { getTranslate } from "../api";
 import { loading } from "../util";
 
-export default async function generatorEnum(enumStr: string, { isOptionFull,enumDesc }: { isOptionFull: boolean,enumDesc:string }): Promise<string | undefined> {
+
+
+export default async function generatorEnum(enumStr: string, { isOptionFull, enumDesc }: { isOptionFull: boolean, enumDesc: string }, enumValues: enumMatch): Promise<string | undefined> {
 
   // 拆分key和value
   const [key, valueStr] = enumStr.split("=[");
@@ -19,7 +21,7 @@ export default async function generatorEnum(enumStr: string, { isOptionFull,enum
     .map((item: string, index: number) => {
       const [value, label] = item.split(":");
       map[index] = {
-        value,
+        value: value.trim(),
         label,
       };
       return label;
@@ -40,14 +42,27 @@ export default async function generatorEnum(enumStr: string, { isOptionFull,enum
     keyList.forEach((item: string, index: number) => {
       const enumEnKey = item.split(' ').map((it: string) => it.toUpperCase()).join('_').replace(/-/g, '_').replace(/\W/g, '');
       const enumKey = isOptionFull ? enumEnKey : enumEnKey.length > 12 ? `ENUM${index}` : enumEnKey
-      enumValue += `
+      const curEnum = enumValues.enumList.find(item => {
+        return item.value === map[index].value
+      })
+      if (curEnum && enumValues.enumName === key) {
+        enumValue += `
+  /// ch: ${map[index].label}
+  /// 
+  /// en: ${item}
+  ///
+  ${curEnum.str}${keyList.length - 1 == index ? ';' : ','}
+      `
+      } else {
+        enumValue += `
   /// ch: ${map[index].label}
   /// 
   /// en: ${item}
   /// 
-  /// value: ${map[index].value}
+  /// [value]: ${map[index].value}
   ${enumKey}(${map[index].value}, '${map[index].label}')${keyList.length - 1 == index ? ';' : ','}
-      `;
+            `
+      };
     });
   });
   // 生成枚举
@@ -57,10 +72,21 @@ export default async function generatorEnum(enumStr: string, { isOptionFull,enum
 enum ${key} {
   ${enumValue}
 
+  ${enumValues.variables.length == 0 || enumValues.enumName !== key ? `
   final int value;
   final String label;
-
+  `:
+      `
+${enumValues.variables.map(item => `  ${item}`).join('\n')}
+  `
+    }
+  
+    ${enumValues.enumName !== key ? `
   const ${key}(this.value, this.label);
+      `: `
+  ${enumValues.constructor}
+      `
+    }
 
   static String? valueToLabel(int? value) {
     return ${key}.values.firstWhereOrNull((item) {
@@ -71,7 +97,13 @@ enum ${key} {
   static ${key}? valueToEnum(int? value) {
     return ${key}.values.firstWhereOrNull((item) {
       return item.value == value;
-    });【
+    });
+  }
+
+  static ${key}? labelToEnum(String label) {
+    return ${key}.values.firstWhereOrNull((item) {
+      return item.label == label;
+    });
   }
 }
   `;

@@ -8,11 +8,11 @@ import humps from 'humps';
 
 const CREATE_LIST = ["是", "否"];
 const FULL_LIST = ["是", "否"];
-const OVERWRITE_LIST = ["是", "否"];
+const OVERWRITE_LIST = ["覆盖", "增量", "取消"];
 
 export default async function generateEnum(
   enumData: string,
-  options: { translate: boolean; force: boolean }
+  options: { translate: boolean; force: boolean, increment: boolean }
 ) {
   let enumStr = enumData;
   let isOptionFull = options.translate;
@@ -38,7 +38,7 @@ export default async function generateEnum(
   ]);
   try {
     const fileName = humps.decamelize(key).replace('_enum', '');
-    
+
     if (!options.translate) {
       const { isFull } = await inquirer.prompt([
         {
@@ -70,6 +70,13 @@ export default async function generateEnum(
     let targetFile = '';
     let targetDirectory = cwd;
 
+    let enumValues: enumMatch = {
+      enumList: [],
+      enumName: '',
+      constructor: '',
+      variables: []
+    };
+
     if (isCreate) {
       const { targetPath } = await inquirer.prompt([
         {
@@ -83,19 +90,25 @@ export default async function generateEnum(
       targetDirectory = path.join(cwd, rootEnumPath, target);
 
       targetFile = path.join(targetDirectory, `${fileName}.dart`);
+
       if (fs.existsSync(targetFile)) {
-        if (!options.force) {
+        if (options.increment) {
+          enumValues = await matchEnum(targetFile, fileName)
+        } else if (!options.force) {
           const { overwrite } = await inquirer.prompt([
             {
               name: "overwrite",
               type: "list",
-              message: "目标文件已存在，请选择是否覆盖",
+              message: "目标文件已存在，请选择操作",
               choices: OVERWRITE_LIST,
               default: 0,
             },
           ]);
           if (overwrite === OVERWRITE_LIST[0]) {
             await loading(`删除 ${fileName}.dart中, 请稍等`, fs.remove, targetFile);
+          } else if (overwrite === OVERWRITE_LIST[1]) {
+            enumValues = await matchEnum(targetFile, fileName)
+            console.log(enumValues)
           } else {
             return;
           }
@@ -105,7 +118,7 @@ export default async function generateEnum(
       }
     }
 
-    const enumString = await generatorEnum(enumStr, { isOptionFull,enumDesc });
+    const enumString = await generatorEnum(enumStr, { isOptionFull, enumDesc }, enumValues);
     if (!enumString) {
       return;
     }
@@ -126,4 +139,26 @@ export default async function generateEnum(
     console.log(error);
     console.log("😱 出错了，请检查数据");
   }
+}
+
+
+async function matchEnum(targetFile: string, fileName: string): Promise<enumMatch> {
+  const str = await loading(`读取 ${fileName}.dart中, 请稍等`, fs.readFile, targetFile, 'utf-8')
+  const values = str.match(/\/\/\/ \[value\]: [\w\W]*?\)/g);
+  const variables = str.match(/final\s.*?;/g);
+  const enumName = str.match(/(?<=enum\s+)\w+(?=\s*\{)/g)[0];
+  const constructor = str.match(/const\s[\w\W]*?;/g)[0]
+
+  return {
+    enumName,
+    constructor: constructor,
+    enumList: values.map((item: string) => ({
+      value: item.match(/\/\/\/\s\[value\]:\s*(\d+)/g)![0].split(":")[1].trim(),
+      str: item,
+    })),
+    variables: variables
+  }
+
+
+
 }

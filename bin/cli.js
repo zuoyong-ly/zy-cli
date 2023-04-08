@@ -30,6 +30,7 @@ program
   .description("枚举翻译")
   .option("-f, --force", "目标目录已存在，是否覆盖目标目录")
   .option("-t, --translate", "枚举是否使用翻译后的数据")
+  .option("-i, --increment", "目标目录已存在，是否增量添加数据")
   .action((enumData, options) => {
     generateEnum(enumData, options);
   });
