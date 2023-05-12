@@ -77,6 +77,7 @@ export default async function generateEnum(
       variables: []
     };
 
+
     if (isCreate) {
       const { targetPath } = await inquirer.prompt([
         {
@@ -152,7 +153,7 @@ async function matchEnum(targetFile: string, fileName: string): Promise<enumMatc
   return {
     enumName,
     constructor: constructor,
-    enumList: values.map((item: string) => ({
+    enumList: values?.map((item: string) => ({
       value: item.match(/\/\/\/\s\[value\]:\s*(\d+)/g)![0].split(":")[1].trim(),
       str: item,
     })),
