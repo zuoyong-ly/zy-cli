@@ -72,21 +72,10 @@ export default async function generatorEnum(enumStr: string, { isOptionFull, enu
 enum ${key} {
   ${enumValue}
 
-  ${enumValues.variables.length == 0 || enumValues.enumName !== key ? `
-  final int value;
-  final String label;
-  `:
-      `
-${enumValues.variables.map(item => `  ${item}`).join('\n')}
-  `
-    }
+  ${enumValues.variables.length == 0 || enumValues.enumName !== key ? `final int value;
+  final String label;`:`${enumValues.variables.map(item => `  ${item}`).join('\n')}`}
   
-    ${enumValues.enumName !== key ? `
-  const ${key}(this.value, this.label);
-      `: `
-  ${enumValues.constructor}
-      `
-    }
+  ${enumValues.enumName !== key ? `const ${key}(this.value, this.label);`: `${enumValues.constructor}`}
 
   static String? valueToLabel(int? value) {
     return ${key}.values.firstWhereOrNull((item) {
