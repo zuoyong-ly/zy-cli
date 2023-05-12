@@ -42,7 +42,7 @@ export default async function generatorEnum(enumStr: string, { isOptionFull, enu
     keyList.forEach((item: string, index: number) => {
       const enumEnKey = item.split(' ').map((it: string) => it.toUpperCase()).join('_').replace(/-/g, '_').replace(/\W/g, '');
       const enumKey = isOptionFull ? enumEnKey : enumEnKey.length > 12 ? `ENUM${index}` : enumEnKey
-      const curEnum = enumValues.enumList.find(item => {
+      const curEnum = enumValues.enumList?.find(item => {
         return item.value === map[index].value
       })
       if (curEnum && enumValues.enumName === key) {
