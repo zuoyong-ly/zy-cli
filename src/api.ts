@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { truncate } from './util';
 import * as crypto from 'crypto-js';
+import { Service } from '@volcengine/openapi';
 
 // 拦截全局请求响应
 axios.interceptors.response.use((res: { data: any; }) => {
@@ -35,7 +36,7 @@ export async function getTranslate(query: string) {
   const to = "en";
   return axios.get(`https://openapi.youdao.com/api`, {
     params: {
-      q: query,
+      q: query.split('\n'),
       appKey: appKey,
       salt: salt,
       from: from,
@@ -45,5 +46,20 @@ export async function getTranslate(query: string) {
       curtime: curtime,
     }
   });
+}
 
+export async function getVolcengineTranslate(query: string) {
+  const service = new Service({ serviceName: 'translate' });
+
+  // 设置aksk
+  service.setAccessKeyId('AKLTOWJhZmVkZThkZjRiNDcxZmI0MGM1YTNmNTNkNzAzMTA');
+  service.setSecretKey('WlRFeVlUSmxabUptWXpVeE5HUXlZemxoWVdVME16QXlNVEJqTVRZNFpqVQ==');
+  // 请求预定义的OpenAPI
+  const usersResponse = await service.createJSONAPI('TranslateText', {
+    "Version": "2020-06-01",
+  });
+  return usersResponse({
+    "TargetLanguage": "en",
+    "TextList": [query],
+  });
 }

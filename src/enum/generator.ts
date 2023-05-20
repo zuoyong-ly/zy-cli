@@ -1,4 +1,4 @@
-import { getTranslate } from "../api";
+import { getVolcengineTranslate } from "../api";
 import { loading } from "../util";
 
 
@@ -31,15 +31,15 @@ export default async function generatorEnum(enumStr: string, { isOptionFull, enu
 
 
   const data: any = await
-    loading('🚀 翻译中', getTranslate, query)
-  if (data.errorCode !== '0') {
-    console.log(`❌ 翻译失败，错误码：${data.errorCode}`)
+    loading('🚀 翻译中', getVolcengineTranslate, query)
+  if (!data.TranslationList) {
+    console.log(`❌ 翻译失败`)
     return;
   }
 
   // 翻译枚举
-  data.translation.forEach((item: any) => {
-    const keyList = item.split("\n");
+  data.TranslationList.forEach((item: any) => {
+    const keyList = item.Translation.split("\n");
     keyList.forEach((item: string, index: number) => {
       const enumEnKey = item.split(' ').map((it: string) => it.toUpperCase()).join('_').replace(/-/g, '_').replace(/\W/g, '');
       const enumKey = isOptionFull ? enumEnKey : enumEnKey.length > 12 ? `ENUM${index}` : enumEnKey
