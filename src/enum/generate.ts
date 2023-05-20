@@ -27,7 +27,7 @@ export default async function generateEnum(
     enumStr = enumString;
   }
 
-  const [key] = enumStr.split("=[");
+  const key = enumStr.split("=[")[0].trim();
   const { enumDesc } = await inquirer.prompt([
     {
       name: "enumDesc",
@@ -108,8 +108,7 @@ export default async function generateEnum(
           if (overwrite === OVERWRITE_LIST[0]) {
             await loading(`删除 ${fileName}.dart中, 请稍等`, fs.remove, targetFile);
           } else if (overwrite === OVERWRITE_LIST[1]) {
-            enumValues = await matchEnum(targetFile, fileName)
-            console.log(enumValues)
+            enumValues = await matchEnum(targetFile, fileName);
           } else {
             return;
           }

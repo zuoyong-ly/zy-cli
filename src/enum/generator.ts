@@ -6,7 +6,8 @@ import { loading } from "../util";
 export default async function generatorEnum(enumStr: string, { isOptionFull, enumDesc }: { isOptionFull: boolean, enumDesc: string }, enumValues: enumMatch): Promise<string | undefined> {
 
   // 拆分key和value
-  const [key, valueStr] = enumStr.split("=[");
+  const [enumKey, valueStr] = enumStr.split("=[");
+  const key = enumKey.trim();
   const values = valueStr.substring(0, valueStr.length - 1);
 
   const map: {
