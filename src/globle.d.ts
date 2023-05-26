@@ -1,11 +1,12 @@
 declare module 'download-git-repo'
 
-interface enumMatch {
+interface EnumMatch {
   enumName: string,
   constructor: string,
   enumList: {
-    value: string;
+    id: string;
     str: string;
   }[];
+  // 变量
   variables: string[];
 }

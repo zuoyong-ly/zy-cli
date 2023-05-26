@@ -70,7 +70,7 @@ export default async function generateEnum(
     let targetFile = '';
     let targetDirectory = cwd;
 
-    let enumValues: enumMatch = {
+    let enumValues: EnumMatch = {
       enumList: [],
       enumName: '',
       constructor: '',
@@ -142,9 +142,9 @@ export default async function generateEnum(
 }
 
 
-async function matchEnum(targetFile: string, fileName: string): Promise<enumMatch> {
+async function matchEnum(targetFile: string, fileName: string): Promise<EnumMatch> {
   const str = await loading(`读取 ${fileName}.dart中, 请稍等`, fs.readFile, targetFile, 'utf-8')
-  const values = str.match(/\/\/\/ \[value\]: [\w\W]*?\)/g);
+  const values = str.match(/\/\/\/ \[value\]: [\w\W]*?\),\n\n/g);
   const variables = str.match(/final\s.*?;/g);
   const enumName = str.match(/(?<=enum\s+)\w+(?=\s*\{)/g)[0];
   const constructor = str.match(/const\s[\w\W]*?;/g)[0]
@@ -153,7 +153,7 @@ async function matchEnum(targetFile: string, fileName: string): Promise<enumMatc
     enumName,
     constructor: constructor,
     enumList: values?.map((item: string) => ({
-      value: item.match(/\/\/\/\s\[value\]:\s*(\d+)/g)![0].split(":")[1].trim(),
+      id: item.match(/\/\/\/\s\[value\]:\s*(\d+)/g)![0].split(":")[1].trim(),
       str: item,
     })),
     variables: variables

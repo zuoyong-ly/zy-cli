@@ -58,8 +58,10 @@ export async function getVolcengineTranslate(query: string) {
   const usersResponse = await service.createJSONAPI('TranslateText', {
     "Version": "2020-06-01",
   });
-  return usersResponse({
+  var a = await usersResponse({
     "TargetLanguage": "en",
     "TextList": [query],
   });
+  console.log(JSON.stringify(a))
+  return a;
 }
