@@ -100,4 +100,5 @@ export default async function generateIcon() {
     // fs.writeFileSync(ohIcon1Directory, iconString);
     console.log(`✅ 已经成功创建文件 ${ohIconDirectory}`);
     console.log('删除icon：', delIconList);
+    fs.unlinkSync(iconDirectory);
 }
