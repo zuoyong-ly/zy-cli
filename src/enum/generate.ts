@@ -1,9 +1,9 @@
-import { exec } from "child_process";
+import {exec} from "child_process";
 import inquirer from "inquirer";
 import fs from "fs-extra";
 import path from "path";
 import generatorEnum from "./generator";
-import { loading } from "../util";
+import {loading} from "../util";
 import humps from 'humps';
 
 const CREATE_LIST = ["是", "否"];
@@ -86,9 +86,8 @@ export default async function generateEnum(
           message: `请输入路径（${rootEnumPath}下的文件）`,
         },
       ]);
-      let target = targetPath;
       // 拼接得到项目目录
-      targetDirectory = path.join(cwd, rootEnumPath, target);
+      targetDirectory = path.join(cwd, rootEnumPath, targetPath);
 
       targetFile = path.join(targetDirectory, `${fileName}.dart`);
 
