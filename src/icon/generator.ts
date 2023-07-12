@@ -14,6 +14,7 @@ console.log(iconData)
 
   return `import 'package:flutter/material.dart';
 /// 该文件由自动生成，请勿手动增加
+/// 文档：https://ohmydragon.feishu.cn/wiki/VJTUwjwO6ibwqWklJnxcCe4qn3g
 abstract class OhIcon {
 ${dartIconData}
 }
