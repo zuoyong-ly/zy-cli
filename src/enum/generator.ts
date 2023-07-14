@@ -93,7 +93,7 @@ export default async function generatorEnum(enumStr: string, { isOptionFull, enu
   /// 
   /// en: ${item}
   ///
-  ${curEnum.str}${keyList.length - 1 == index ? ';' : ','}
+  ${curEnum.str}
       `
       } else {
         enumValue += `
