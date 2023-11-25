@@ -1,5 +1,5 @@
-import { getVolcengineTranslate } from "../api";
-import { loading } from "../util";
+import {getVolcengineTranslate} from "../api";
+import {loading} from "../util";
 
 
 type ResultEnum = {
@@ -8,7 +8,10 @@ type ResultEnum = {
 }
 
 
-export default async function generatorEnum(enumStr: string, { isOptionFull, enumDesc }: { isOptionFull: boolean, enumDesc: string }, enumValues: EnumMatch): Promise<string | undefined> {
+export default async function generatorEnum(enumStr: string, {isOptionFull, enumDesc}: {
+  isOptionFull: boolean,
+  enumDesc: string
+}, enumValues: EnumMatch): Promise<string | undefined> {
 
   // 拆分key和value
   const [enumKey, valueStr] = enumStr.split("=[");
@@ -75,8 +78,6 @@ export default async function generatorEnum(enumStr: string, { isOptionFull, enu
   resultEnumList.sort((a, b) => {
     return a.enumId.localeCompare(b.enumId);
   });
-  console.log(resultEnumList);
-
 
   // 翻译枚举
   data.TranslationList.forEach((item: any) => {
@@ -104,7 +105,8 @@ export default async function generatorEnum(enumStr: string, { isOptionFull, enu
   /// [value]: ${inputEnumList[index].value}
   ${enumKey}(${inputEnumList[index].value}, '${inputEnumList[index].label}')${keyList.length - 1 == index ? ';' : ','}
             `
-      };
+      }
+      ;
     });
   });
   // 生成枚举
@@ -115,7 +117,7 @@ enum ${key} {
   ${enumValue}
 
   ${enumValues.variables.length == 0 || enumValues.enumName !== key ? `final int value;
-  final String label;`: `${enumValues.variables.map(item => `  ${item}`).join('\n')}`}
+  final String label;` : `${enumValues.variables.map(item => `  ${item}`).join('\n')}`}
   
   ${enumValues.enumName !== key ? `const ${key}(this.value, this.label);` : `${enumValues.constructor}`}
 
