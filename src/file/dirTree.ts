@@ -146,12 +146,5 @@ export default function writeFile(filename: string) {
   //     () => {
   //     }
   // );
-  fs.writeFile(
-    'fileList.json',
-    // @ts-ignore
-    JSON.stringify(fileList, '', '\t'),
-    {},
-    () => {
-    }
-  );
+
 }
