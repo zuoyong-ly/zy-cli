@@ -1,6 +1,6 @@
 {
   "name": "@zuoyong/zy-cli",
-  "version": "0.0.6",
+  "version": "0.0.6-bate.1",
   "description": "",
   "main": "./bin/cli.js",
   "bin": {
