@@ -7,7 +7,7 @@
     "zy-cli": "./bin/cli.js"
   },
   "scripts": {
-    "dev": "rm -rf lib && tsc --watch && npm link",
+    "dev": "rm -rf lib && npm link && tsc --watch ",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "files": [
