@@ -40,7 +40,9 @@ function dirTree(filename: any) {
 }
 
 function getRoutes() {
-  let routeLineRegex = /\/\/\/[ ]*(.*)(?:\r\n|\r|\n)[ ]*static const[ ]*(\w+)[ ]*=[ ]*(\w+.\w+)/gm;
+  let routeLineRegex = /\/\/\/[ ]*(.*)(?:\r\n|\r|\n)[ ]*static const[ ]*(\w+)[ ]*=[ ]*"(.*)"/gm;
+
+  // let routeLineRegex = /\/\/\/[ ]*(.*)(?:\r\n|\r|\n)[ ]*static const[ ]*(\w+)[ ]*=[ ]*(\w+.\w+)/gm;
   let matches;
   let result = [];
   const cwd = process.cwd();
@@ -52,7 +54,8 @@ function getRoutes() {
     result.push({
       desc: matches[1],
       key: matches[2],
-      path: matches[3]
+      path: matches[3],
+      routePath: matches[3].replace('/', 'OhRoutes.')
     });
   }
   console.log(result.length);
@@ -61,7 +64,6 @@ function getRoutes() {
     // @ts-ignore
     JSON.stringify(result.map(it => ({
       ...it,
-      path: it.path.replace('_OhPaths', 'OhRoutes')
     })), null, '\t'),
     {},
     () => {
