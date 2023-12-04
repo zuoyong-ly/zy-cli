@@ -40,7 +40,7 @@ function dirTree(filename: any) {
 }
 
 function getRoutes() {
-  let routeLineRegex = /\/\/\/[ ]*(.*)(?:\r\n|\r|\n)[ ]*static const[ ]*(\w+)[ ]*=[ ]*"(.*)"/gm;
+  let routeLineRegex = /\/\/\/[ ]*(.*)(?:\r\n|\r|\n)[ ]*static const[ ]*(\w+)[ ]*=[ ]*"(\/\w+.\w+)";/gm;
 
   // let routeLineRegex = /\/\/\/[ ]*(.*)(?:\r\n|\r|\n)[ ]*static const[ ]*(\w+)[ ]*=[ ]*(\w+.\w+)/gm;
   let matches;
