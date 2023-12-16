@@ -30,6 +30,13 @@ export default async function generateApiCode(
     console.log(e)
     return;
   }
+  // 测试代码
+  // const viewList = await table.getViewMetaList();
+  // const view = await table.getViewById(viewList[0].id);
+  // const fieldIds = await view.getVisibleFieldIdList();
+  // console.log(fieldIds)
+  // const fields = await view.getFieldMetaList();
+  // console.log(fields);
 
   const apiCode = `
   await loadModule('https://cdn.bootcdn.net/ajax/libs/axios/1.5.0/axios.min.js');
@@ -40,7 +47,11 @@ async function main() {
     const table = await bitable.base.getActiveTable();
     const apis = [${apiList.map((i: string)=>{return `"${i}"`}).join(',')}];
     const addFields = apis.map((item) => {
-        const apifoxInfo = r.data.paths[item].post;
+        const apifoxInfo = r.data.paths[item]?.post || r.data.paths[item]?.get;
+        if(!apifoxInfo) {
+            console.log('😱 接口不存在，获取不是get OR post', item);
+            return;
+        }
         let model = {
             id: 'optbIJVsGx',
             name: 'APP',
@@ -67,8 +78,8 @@ async function main() {
                 fldWjvGvp9: apifoxInfo.summary,
                 fldLjBt4ap: apifoxInfo['x-run-in-apifox'].replace('-run', ''),
                 fldmxbkdYD: {
-                    id: 'optwagMv6X',
-                    name: '开发中',
+                    id: 'opt4tIA3dR',
+                    name: '分析设计中',
                 },
                 fldYcrt78i: model,
                 fldk9mLlZ8: isNewApi,
