@@ -138,6 +138,13 @@ enum ${key} {
       return item.label == label;
     });
   }
+
+  static ${key}? indexToEnum(int index) {
+    if (${key}.values.length > index) {
+      return ${key}.values[index];
+    }
+    return null;
+  }
 }
   `;
   return enumString;
